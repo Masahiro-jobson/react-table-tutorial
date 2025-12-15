@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { useState } from "react";
 import "./App.css";
 import data from "./mock-data.json";
@@ -15,6 +16,35 @@ function App() {
 
   });
 
+  const handleAddFormChange = (e) => {
+    e.preventDefault();
+
+    const fieldName = e.target.getAttribute("name");
+    const fieldValue = e.target.value;
+
+    // To make a copy of current state of addFormData.
+    const newFormData = { ...addFormData};
+    // [] is used for the value of the variable fieldName as the key.
+    newFormData[fieldName] = fieldValue;
+
+    setAddFormData(newFormData);
+  };
+
+  const handleAddFormSubmit = (e) => {
+    e.preventDefault();
+
+    const newContact = {
+      id: nanoid(),
+      fullName: addFormData.fullName,
+      address: addFormData.address,
+      phoneNumber: addFormData.phoneNumber,
+      email: addFormData.email,
+    }
+
+    const newContacts = [...contacts, newContact];
+    setContacts(newContacts);
+
+  }
 
 
   return (
@@ -42,27 +72,33 @@ function App() {
       </table>
 
       <h2>Add a Contact</h2>
-      <form>
+      <form onSubmit={handleAddFormSubmit}>
         <input 
         type="text" 
         name="fullName" 
         required= "required" 
-        placeholder="Enter a name... "/>
+        placeholder="Enter a name... "
+        onChange={handleAddFormChange}/>
         <input 
         type="text" 
         name="address" 
         required= "required" 
-        placeholder="Enter an address... "/>
+        placeholder="Enter an address... "
+        onChange={handleAddFormChange}/>
         <input 
         type="text" 
         name="phoneNumber" 
         required= "required" 
-        placeholder="Enter a phone number... "/>
+        placeholder="Enter a phone number... "
+        onChange={handleAddFormChange}/>
+        
         <input 
         type="text" 
         name="email" 
         required= "required" 
-        placeholder="Enter an email... "/>
+        placeholder="Enter an email... "
+        onChange={handleAddFormChange}/>
+        
         <button type="submit">Submit</button>
       </form>
       
